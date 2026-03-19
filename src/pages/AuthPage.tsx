@@ -192,9 +192,10 @@ export default function AuthPage() {
               style={{ background: 'linear-gradient(145deg, #2a5c40, #1A3A2A)' }}
             >
               <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
-                <path d="M4 20 Q10 8 16 16 Q22 24 28 12" stroke="#C8F5A0" strokeWidth="3.5" strokeLinecap="round" />
-                <rect x="11" y="16" width="10" height="9" rx="1.5" fill="white" opacity="0.85" />
-                <path d="M9 17 L16 11 L23 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.85" />
+                <path d="M6 14 L16 4 L26 14 Z" fill="white" opacity="0.95"/>
+                <rect x="9" y="13" width="14" height="11" rx="1" fill="white" opacity="0.95"/>
+                <rect x="13" y="17" width="6" height="7" rx="1" fill="#1A3A2A" opacity="0.45"/>
+                <path d="M4 27 Q8 24 12 27 Q16 30 20 27 Q24 24 28 27" stroke="#C8F5A0" strokeWidth="2" strokeLinecap="round" fill="none"/>
               </svg>
             </div>
             <h1 className="font-display text-[28px] font-bold text-charcoal">

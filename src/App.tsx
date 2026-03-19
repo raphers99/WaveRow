@@ -49,15 +49,13 @@ export default function App() {
         {!isFullscreen && <Navbar />}
 
         <main className={!isFullscreen && !hideBottomNav ? 'flex-1 pb-nav' : 'flex-1'}>
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={location.pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.22, ease: 'easeOut' }}
-            >
-              <Routes location={location}>
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+          >
+              <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/listings" element={<ListingsPage />} />
                 <Route path="/listings/:id" element={<ListingDetailPage />} />
@@ -80,8 +78,7 @@ export default function App() {
                   <ProtectedRoute><LeaseAnalyzerPage /></ProtectedRoute>
                 } />
               </Routes>
-            </motion.div>
-          </AnimatePresence>
+          </motion.div>
         </main>
 
         {!hideBottomNav && <BottomNav />}

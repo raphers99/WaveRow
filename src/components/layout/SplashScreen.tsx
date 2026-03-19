@@ -21,14 +21,17 @@ export default function SplashScreen() {
           style={{ background: 'linear-gradient(145deg, #2a5c40, #1A3A2A)', border: '1px solid rgba(200,245,160,0.2)' }}
         >
           <svg width="68" height="68" viewBox="0 0 64 64" fill="none">
-            {/* Wave */}
-            <path d="M8 38 Q18 16 32 28 Q46 40 56 20" stroke="#C8F5A0" strokeWidth="4.5" strokeLinecap="round" fill="none" />
-            <path d="M8 46 Q18 24 32 36 Q46 48 56 28" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.25" />
-            {/* House */}
-            <rect x="22" y="38" width="20" height="16" rx="2" fill="white" opacity="0.9" />
-            <path d="M18 40 L32 28 L46 40" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.9" />
+            {/* House roof */}
+            <path d="M14 28 L32 10 L50 28 Z" fill="white" opacity="0.95" />
+            {/* House body */}
+            <rect x="18" y="26" width="28" height="22" rx="1.5" fill="white" opacity="0.95" />
             {/* Door */}
-            <rect x="28" y="46" width="8" height="8" rx="1" fill="#1A3A2A" opacity="0.5" />
+            <rect x="27" y="36" width="10" height="12" rx="2" fill="#1A3A2A" opacity="0.45" />
+            {/* Windows */}
+            <rect x="20" y="30" width="7" height="5" rx="1" fill="#1A3A2A" opacity="0.2" />
+            <rect x="37" y="30" width="7" height="5" rx="1" fill="#1A3A2A" opacity="0.2" />
+            {/* Wave below house */}
+            <path d="M8 54 Q16 48 24 54 Q32 60 40 54 Q48 48 56 54" stroke="#C8F5A0" strokeWidth="3.5" strokeLinecap="round" fill="none" />
           </svg>
         </div>
 
