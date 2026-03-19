@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import { useAuthStore } from '@/stores/authStore'
 import SplashScreen from '@/components/layout/SplashScreen'
 import Navbar from '@/components/layout/Navbar'
@@ -19,19 +20,31 @@ import ChatPage from '@/pages/ChatPage'
 import WaitlistPage from '@/pages/WaitlistPage'
 import LeaseAnalyzerPage from '@/pages/LeaseAnalyzerPage'
 
+// Pages that manage their own layout (no shared nav chrome)
+const FULLSCREEN_ROUTES = ['/chat/', '/auth/callback']
+const NO_BOTTOM_NAV = ['/create', '/login', '/auth/callback']
+
 export default function App() {
   const { initialize, initialized } = useAuthStore()
+  const location = useLocation()
 
   useEffect(() => {
     initialize()
   }, [initialize])
 
+  const isFullscreen = FULLSCREEN_ROUTES.some(r => location.pathname.startsWith(r))
+  const hideBottomNav = NO_BOTTOM_NAV.some(r => location.pathname.startsWith(r)) || isFullscreen
+
   return (
     <>
-      {!initialized && <SplashScreen />}
+      <AnimatePresence>
+        {!initialized && <SplashScreen key="splash" />}
+      </AnimatePresence>
+
       <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-1 pb-nav">
+        {!isFullscreen && <Navbar />}
+
+        <main className={!isFullscreen && !hideBottomNav ? 'flex-1 pb-nav' : 'flex-1'}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/listings" element={<ListingsPage />} />
@@ -56,7 +69,8 @@ export default function App() {
             } />
           </Routes>
         </main>
-        <BottomNav />
+
+        {!hideBottomNav && <BottomNav />}
       </div>
     </>
   )

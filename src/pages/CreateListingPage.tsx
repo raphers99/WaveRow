@@ -132,7 +132,7 @@ export default function CreateListingPage() {
   }
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen" style={{ paddingBottom: 'calc(5rem + env(safe-area-inset-bottom))' }}>
       {/* Header */}
       <div className="sticky top-14 z-40 px-4 py-3 border-b border-border/50"
         style={{ background: 'rgba(247,247,242,0.92)', backdropFilter: 'blur(16px)' }}>
