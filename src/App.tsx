@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { useAuthStore } from '@/stores/authStore'
 import SplashScreen from '@/components/layout/SplashScreen'
 import Navbar from '@/components/layout/Navbar'
@@ -49,36 +49,29 @@ export default function App() {
         {!isFullscreen && <Navbar />}
 
         <main className={!isFullscreen && !hideBottomNav ? 'flex-1 pb-nav' : 'flex-1'}>
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/listings" element={<ListingsPage />} />
-                <Route path="/listings/:id" element={<ListingDetailPage />} />
-                <Route path="/sublets" element={<SubletsPage />} />
-                <Route path="/roommates" element={<RoommatesPage />} />
-                <Route path="/neighborhoods" element={<NeighborhoodsPage />} />
-                <Route path="/login" element={<AuthPage />} />
-                <Route path="/auth/callback" element={<AuthCallbackPage />} />
-                <Route path="/waitlist" element={<WaitlistPage />} />
-                <Route path="/create" element={
-                  <ProtectedRoute><CreateListingPage /></ProtectedRoute>
-                } />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute><DashboardPage /></ProtectedRoute>
-                } />
-                <Route path="/chat/:conversationId" element={
-                  <ProtectedRoute><ChatPage /></ProtectedRoute>
-                } />
-                <Route path="/lease-analyzer" element={
-                  <ProtectedRoute><LeaseAnalyzerPage /></ProtectedRoute>
-                } />
-              </Routes>
-          </motion.div>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/listings" element={<ListingsPage />} />
+            <Route path="/listings/:id" element={<ListingDetailPage />} />
+            <Route path="/sublets" element={<SubletsPage />} />
+            <Route path="/roommates" element={<RoommatesPage />} />
+            <Route path="/neighborhoods" element={<NeighborhoodsPage />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            <Route path="/waitlist" element={<WaitlistPage />} />
+            <Route path="/create" element={
+              <ProtectedRoute><CreateListingPage /></ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute><DashboardPage /></ProtectedRoute>
+            } />
+            <Route path="/chat/:conversationId" element={
+              <ProtectedRoute><ChatPage /></ProtectedRoute>
+            } />
+            <Route path="/lease-analyzer" element={
+              <ProtectedRoute><LeaseAnalyzerPage /></ProtectedRoute>
+            } />
+          </Routes>
         </main>
 
         {!hideBottomNav && <BottomNav />}
