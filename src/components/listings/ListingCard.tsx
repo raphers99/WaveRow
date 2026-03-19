@@ -68,6 +68,7 @@ export default function ListingCard({ listing, compact = false }: Props) {
   }
 
   return (
+    <Link to={`/listings/${listing.id}`} className="block">
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="card overflow-hidden">
       {/* Photo */}
       <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '4/3' }}>
@@ -101,7 +102,7 @@ export default function ListingCard({ listing, compact = false }: Props) {
       </div>
 
       {/* Content */}
-      <Link to={`/listings/${listing.id}`} className="block p-4">
+      <div className="block p-4">
         <div className="flex items-start justify-between mb-1.5">
           <div>
             <span className="font-display font-bold text-[22px] text-forest leading-none">${rent.toLocaleString()}</span>
@@ -146,7 +147,8 @@ export default function ListingCard({ listing, compact = false }: Props) {
             </div>
           )}
         </div>
-      </Link>
+      </div>
     </motion.div>
+    </Link>
   )
 }

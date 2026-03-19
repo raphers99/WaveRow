@@ -59,6 +59,11 @@
   }
 }
 
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
@@ -148,11 +153,6 @@
     background: linear-gradient(90deg, #f0f0eb 25%, #e8e8e2 50%, #f0f0eb 75%);
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
   }
 
   .wave-bg {

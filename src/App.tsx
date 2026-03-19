@@ -6,6 +6,7 @@ import SplashScreen from '@/components/layout/SplashScreen'
 import Navbar from '@/components/layout/Navbar'
 import BottomNav from '@/components/layout/BottomNav'
 import ProtectedRoute from '@/components/layout/ProtectedRoute'
+import ErrorBoundary from '@/components/layout/ErrorBoundary'
 import HomePage from '@/pages/HomePage'
 import ListingsPage from '@/pages/ListingsPage'
 import ListingDetailPage from '@/pages/ListingDetailPage'
@@ -52,7 +53,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/listings" element={<ListingsPage />} />
-            <Route path="/listings/:id" element={<ListingDetailPage />} />
+            <Route path="/listings/:id" element={<ErrorBoundary><ListingDetailPage /></ErrorBoundary>} />
             <Route path="/sublets" element={<SubletsPage />} />
             <Route path="/roommates" element={<RoommatesPage />} />
             <Route path="/neighborhoods" element={<NeighborhoodsPage />} />
