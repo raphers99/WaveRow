@@ -67,7 +67,13 @@ export default function ListingDetailPage() {
   if (!listing) return (
     <div className="min-h-screen flex items-center justify-center text-center px-6">
       <div>
-        <p className="text-5xl mb-4">🏠</p>
+        <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: '#1A3A2A' }}>
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+            <path d="M8 38 Q18 16 32 28 Q46 40 56 20" stroke="#C8F5A0" strokeWidth="4.5" strokeLinecap="round"/>
+            <rect x="22" y="38" width="20" height="16" rx="2" fill="white" opacity="0.9"/>
+            <path d="M18 40 L32 28 L46 40" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.9"/>
+          </svg>
+        </div>
         <h2 className="font-display font-bold text-xl mb-2">Listing not found</h2>
         <Link to="/listings" className="btn-primary px-6 py-3 text-[14px]">Browse Listings</Link>
       </div>

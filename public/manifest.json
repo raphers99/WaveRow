@@ -1,0 +1,17 @@
+{
+  "name": "WaveRow",
+  "short_name": "WaveRow",
+  "description": "Student housing marketplace for Tulane University",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1A3A2A",
+  "theme_color": "#1A3A2A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

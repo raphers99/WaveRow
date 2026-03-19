@@ -93,7 +93,11 @@ export default function ChatPage() {
           </div>
         ) : messages.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-4xl mb-3">👋</p>
+            <div className="w-14 h-14 rounded-full mx-auto mb-3 flex items-center justify-center bg-forest/10">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A3A2A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
             <p className="font-display font-bold text-[17px] mb-1">Start the conversation</p>
             <p className="text-gray-400 text-[13px]">Say hello and ask about the listing</p>
           </div>

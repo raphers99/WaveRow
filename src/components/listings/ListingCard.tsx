@@ -41,7 +41,7 @@ export default function ListingCard({ listing, compact = false }: Props) {
       <Link to={`/listings/${listing.id}`}>
         <motion.div whileTap={{ scale: 0.97 }} className="card flex gap-3 p-3">
           <div className="relative w-28 h-24 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
-            <img src={photo} alt={listing.title} className="w-full h-full object-cover" />
+            <img src={photo} alt={listing.title} className="w-full h-full object-cover" loading="lazy" />
             {isNew && <span className="absolute top-1.5 left-1.5 badge-new">NEW</span>}
           </div>
           <div className="flex-1 min-w-0 py-0.5">
@@ -71,7 +71,7 @@ export default function ListingCard({ listing, compact = false }: Props) {
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="card overflow-hidden">
       {/* Photo */}
       <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '4/3' }}>
-        <img src={photo} alt={listing.title} className="w-full h-full object-cover" />
+        <img src={photo} alt={listing.title} className="w-full h-full object-cover" loading="lazy" />
 
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           {isNew && <span className="badge-new">NEW</span>}

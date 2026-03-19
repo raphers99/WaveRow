@@ -97,7 +97,13 @@ export default function ListingsPage() {
           </div>
         ) : results.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-5xl mb-4">🏠</p>
+            <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: '#1A3A2A' }}>
+              <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+                <path d="M8 38 Q18 16 32 28 Q46 40 56 20" stroke="#C8F5A0" strokeWidth="4.5" strokeLinecap="round"/>
+                <rect x="22" y="38" width="20" height="16" rx="2" fill="white" opacity="0.9"/>
+                <path d="M18 40 L32 28 L46 40" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.9"/>
+              </svg>
+            </div>
             <p className="font-display text-xl font-bold mb-2">No listings found</p>
             <p className="text-[14px] text-gray-400 mb-4">Try adjusting your filters</p>
             <button onClick={() => setFilters(DEFAULT_FILTERS)} className="btn-primary mx-auto text-[14px] px-5 py-2.5">
