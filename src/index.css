@@ -16,15 +16,25 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
+    /* Prevent elastic over-scroll bounce on iOS */
+    overscroll-behavior: none;
   }
 
   body {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     background-color: var(--surface);
     color: var(--text-primary);
     overflow-x: hidden;
     max-width: 100vw;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Improve text rendering on iOS */
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Smooth momentum scrolling on iOS */
+  * {
+    -webkit-overflow-scrolling: touch;
   }
 
   h1, h2, h3, h4, h5, h6 {

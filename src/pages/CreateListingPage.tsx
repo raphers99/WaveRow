@@ -170,9 +170,12 @@ export default function CreateListingPage() {
                   {TYPES.map(t => (
                     <button key={t} onClick={() => set('listing_type', t)}
                       className={`p-4 rounded-2xl border-2 text-left transition-all ${form.listing_type === t ? 'border-forest bg-forest/5' : 'border-border bg-white'}`}>
-                      <p className="text-2xl mb-2">
-                        {t === 'APARTMENT' ? '🏢' : t === 'HOUSE' ? '🏡' : t === 'STUDIO' ? '🛏' : '🚪'}
-                      </p>
+                      <div className="w-9 h-9 rounded-xl mb-2.5 flex items-center justify-center"
+                        style={{ background: form.listing_type === t ? '#1A3A2A' : '#F3F4F6' }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={form.listing_type === t ? '#C8F5A0' : '#6B7280'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          {t === 'APARTMENT' || t === 'STUDIO' ? <><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></> : t === 'HOUSE' ? <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></> : <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></>}
+                        </svg>
+                      </div>
                       <p className="font-display font-bold text-[15px]">{t === 'SHARED_ROOM' ? 'Shared Room' : t.charAt(0) + t.slice(1).toLowerCase()}</p>
                     </button>
                   ))}

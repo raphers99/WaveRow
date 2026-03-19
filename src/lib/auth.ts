@@ -9,33 +9,25 @@ export function isTulaneEmail(email: string): boolean {
   return email.toLowerCase().endsWith('@tulane.edu')
 }
 
+// Sends a 6-digit OTP code — never a magic link
 export async function sendOTP(email: string) {
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
       shouldCreateUser: true,
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   })
   if (error) throw error
 }
 
+// Verifies the 6-digit code the user types in
 export async function verifyOTP(email: string, token: string) {
   const { data, error } = await supabase.auth.verifyOtp({
     email,
     token,
-    type: 'magiclink',
+    type: 'email',
   })
-  if (error) {
-    // fallback to email type
-    const { data: data2, error: error2 } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'email',
-    })
-    if (error2) throw error2
-    return data2
-  }
+  if (error) throw error
   return data
 }
 

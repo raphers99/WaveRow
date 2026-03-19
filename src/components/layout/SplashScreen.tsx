@@ -1,49 +1,74 @@
-'use client'
 import { motion } from 'framer-motion'
 
 export default function SplashScreen() {
   return (
     <motion.div
-      className="fixed inset-0 z-[200] flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #1A3A2A 0%, #0E2218 100%)' }}
+      className="fixed inset-0 z-[200] flex flex-col items-center justify-center"
+      style={{ background: '#0E2218' }}
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
+      exit={{ opacity: 0, scale: 1.04 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
-      <div className="absolute inset-0 wave-bg" />
-
+      {/* Logo */}
       <motion.div
-        className="relative z-10 flex flex-col items-center gap-6"
-        initial={{ opacity: 0, scale: 0.85 }}
+        className="flex flex-col items-center"
+        initial={{ opacity: 0, scale: 0.75 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 240, damping: 20 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 22, delay: 0.1 }}
       >
         <div
-          className="w-24 h-24 rounded-[28px] flex items-center justify-center border border-white/20"
-          style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(16px)' }}
+          className="w-28 h-28 rounded-[32px] flex items-center justify-center mb-7 shadow-2xl"
+          style={{ background: 'linear-gradient(145deg, #2a5c40, #1A3A2A)', border: '1px solid rgba(200,245,160,0.2)' }}
         >
-          <svg width="52" height="52" viewBox="0 0 32 32" fill="none">
-            <path d="M4 20 Q10 8 16 16 Q22 24 28 12" stroke="#C8F5A0" strokeWidth="3" strokeLinecap="round" fill="none" />
-            <path d="M4 24 Q10 12 16 20 Q22 28 28 16" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.4" />
+          <svg width="68" height="68" viewBox="0 0 64 64" fill="none">
+            {/* Wave */}
+            <path d="M8 38 Q18 16 32 28 Q46 40 56 20" stroke="#C8F5A0" strokeWidth="4.5" strokeLinecap="round" fill="none" />
+            <path d="M8 46 Q18 24 32 36 Q46 48 56 28" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.25" />
+            {/* House */}
+            <rect x="22" y="38" width="20" height="16" rx="2" fill="white" opacity="0.9" />
+            <path d="M18 40 L32 28 L46 40" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.9" />
+            {/* Door */}
+            <rect x="28" y="46" width="8" height="8" rx="1" fill="#1A3A2A" opacity="0.5" />
           </svg>
         </div>
 
-        <div className="text-center">
-          <p className="font-display font-bold text-[38px] text-white tracking-tight leading-none">WaveRow</p>
-          <p className="text-white/50 text-[14px] font-sans mt-1.5 tracking-wide">Student Housing · Tulane</p>
-        </div>
+        {/* App name */}
+        <motion.p
+          className="font-display font-bold text-[40px] text-white tracking-tight leading-none mb-3"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.4 }}
+        >
+          WaveRow
+        </motion.p>
 
-        <div className="flex gap-2">
-          {[0, 1, 2].map(i => (
-            <motion.div
-              key={i}
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: '#C8F5A0' }}
-              animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.1, 0.8] }}
-              transition={{ duration: 1.3, repeat: Infinity, delay: i * 0.22 }}
-            />
-          ))}
-        </div>
+        {/* Slogan */}
+        <motion.p
+          className="text-white/50 text-[15px] font-sans text-center leading-snug px-8"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55, duration: 0.4 }}
+        >
+          Bridging the gap between{'\n'}students and landlords
+        </motion.p>
+      </motion.div>
+
+      {/* Loading dots */}
+      <motion.div
+        className="absolute bottom-20 flex gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+      >
+        {[0, 1, 2].map(i => (
+          <motion.div
+            key={i}
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: '#C8F5A0' }}
+            animate={{ opacity: [0.25, 1, 0.25] }}
+            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
+          />
+        ))}
       </motion.div>
     </motion.div>
   )
