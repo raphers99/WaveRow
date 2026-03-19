@@ -14,6 +14,7 @@ export async function sendOTP(email: string) {
     email,
     options: {
       shouldCreateUser: true,
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   })
   if (error) throw error
@@ -23,9 +24,18 @@ export async function verifyOTP(email: string, token: string) {
   const { data, error } = await supabase.auth.verifyOtp({
     email,
     token,
-    type: 'email',
+    type: 'magiclink',
   })
-  if (error) throw error
+  if (error) {
+    // fallback to email type
+    const { data: data2, error: error2 } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'email',
+    })
+    if (error2) throw error2
+    return data2
+  }
   return data
 }
 
