@@ -139,6 +139,49 @@ Keep it warm, honest, and 2 sentences max. Plain text only.`,
       result = { summary: text.trim() }
     }
 
+    // ── Listing Problem Checker ───────────────────────────────────────
+    else if (action === 'check_listing') {
+      const { listing } = body
+      if (!listing) throw new Error('listing required')
+
+      const daysOnMarket = Math.floor(
+        (Date.now() - new Date(listing.created_at).getTime()) / (1000 * 60 * 60 * 24)
+      )
+
+      const message = await client.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 768,
+        messages: [{
+          role: 'user',
+          content: `You are a housing safety assistant for college students. Analyze this rental listing and identify any potential problems, scams, or red flags.
+
+Listing data:
+- Title: ${listing.title}
+- Price: $${Math.round(listing.rent_per_month / 100)}/mo
+- Location: ${listing.neighborhood}${listing.address ? `, ${listing.address}` : ''}
+- Bedrooms: ${listing.bedrooms === 0 ? 'Studio' : listing.bedrooms}
+- Bathrooms: ${listing.bathrooms}
+- Utilities included: ${listing.utilities_included ? 'yes' : 'no'}
+- Pet friendly: ${listing.pet_friendly ? 'yes' : 'no'}
+- Description: ${listing.description || 'none provided'}
+- Listed for: ${daysOnMarket} days
+
+Return ONLY valid JSON with this exact structure:
+{
+  "riskScore": <number 0-100, where 0 is very safe and 100 is very risky>,
+  "riskLevel": "low" | "medium" | "high",
+  "flags": [
+    { "type": "warning" | "danger" | "info", "title": "<short title>", "detail": "<one sentence explanation>" }
+  ],
+  "summary": "<2 sentence plain English assessment>"
+}`,
+        }],
+      })
+
+      const text = message.content[0].type === 'text' ? message.content[0].text : ''
+      result = JSON.parse(text)
+    }
+
     else {
       throw new Error(`Unknown action: ${action}`)
     }

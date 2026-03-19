@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Heart, Share2, MapPin, Bed, Bath, CheckCircle2, MessageSquare, Star, Zap, ChevronLeft, ChevronRight, Shield, Calendar } from 'lucide-react'
+import { ArrowLeft, Heart, Share2, MapPin, Bed, Bath, CheckCircle2, MessageSquare, Star, Zap, ChevronLeft, ChevronRight, Shield, Calendar, AlertTriangle, Info } from 'lucide-react'
 import { getListingById, saveListing, unsaveListing } from '@/lib/queries/listings'
 import { getOrCreateConversation } from '@/lib/queries/messages'
 import { useAuthStore } from '@/stores/authStore'
+import { supabase } from '@/lib/supabase'
 import type { Listing } from '@/types/app.types'
 import toast from 'react-hot-toast'
 import { differenceInHours, parseISO, format } from 'date-fns'
+
+interface CheckerResult {
+  riskScore: number
+  riskLevel: 'low' | 'medium' | 'high'
+  flags: { type: 'warning' | 'danger' | 'info'; title: string; detail: string }[]
+  summary: string
+}
 
 export default function ListingDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -17,6 +25,8 @@ export default function ListingDetailPage() {
   const [loading, setLoading] = useState(true)
   const [imgIdx, setImgIdx] = useState(0)
   const [saved, setSaved] = useState(false)
+  const [checker, setChecker] = useState<CheckerResult | null>(null)
+  const [checkerLoading, setCheckerLoading] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -24,6 +34,12 @@ export default function ListingDetailPage() {
       .then(l => {
         setListing(l)
         setSaved(l?.saved ?? false)
+        if (l) {
+          setCheckerLoading(true)
+          supabase.functions.invoke('ai', { body: { action: 'check_listing', listing: l } })
+            .then(({ data }) => { if (data && !data.error) setChecker(data) })
+            .finally(() => setCheckerLoading(false))
+        }
       })
       .finally(() => setLoading(false))
   }, [id])
@@ -55,11 +71,12 @@ export default function ListingDetailPage() {
 
   if (loading) return (
     <div className="min-h-screen">
-      <div className="h-72 bg-gray-200 animate-pulse" />
-      <div className="p-4 space-y-3">
-        <div className="h-8 bg-gray-200 rounded-xl animate-pulse w-1/3" />
-        <div className="h-6 bg-gray-200 rounded-xl animate-pulse w-2/3" />
-        <div className="h-4 bg-gray-200 rounded-xl animate-pulse w-1/2" />
+      <div className="shimmer" style={{ aspectRatio: '4/3' }} />
+      <div className="p-4 space-y-3 mt-1">
+        <div className="shimmer h-9 rounded-xl w-1/3" />
+        <div className="shimmer h-6 rounded-xl w-2/3" />
+        <div className="shimmer h-4 rounded-xl w-1/2" />
+        <div className="shimmer h-4 rounded-xl w-3/4" />
       </div>
     </div>
   )
@@ -248,6 +265,88 @@ export default function ListingDetailPage() {
               <p className="text-[12px] text-gray-400 capitalize">{listing.profile?.role ?? 'landlord'}</p>
             </div>
           </div>
+        </div>
+
+        {/* AI Listing Checker */}
+        <div className="card overflow-hidden">
+          <div className="flex items-center gap-2 p-4 pb-3">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#C8F5A0' }}>
+              <Zap size={14} style={{ color: '#1A3A2A' }} />
+            </div>
+            <div>
+              <h2 className="font-display font-bold text-[15px]">AI Safety Check</h2>
+              <p className="text-[11px] text-gray-400">Powered by Claude</p>
+            </div>
+            {checker && (
+              <div className={`ml-auto px-3 py-1 rounded-full text-[12px] font-bold ${
+                checker.riskLevel === 'low' ? 'bg-green-100 text-green-700' :
+                checker.riskLevel === 'medium' ? 'bg-amber-100 text-amber-700' :
+                'bg-red-100 text-red-700'
+              }`}>
+                {checker.riskLevel === 'low' ? 'Looks Safe' : checker.riskLevel === 'medium' ? 'Proceed Carefully' : 'High Risk'}
+              </div>
+            )}
+          </div>
+
+          {checkerLoading && (
+            <div className="px-4 pb-4">
+              <div className="flex items-center gap-2 text-[13px] text-gray-400">
+                <div className="w-3.5 h-3.5 border-2 border-gray-300 border-t-forest rounded-full animate-spin flex-shrink-0" />
+                Analyzing listing for red flags…
+              </div>
+            </div>
+          )}
+
+          {!checkerLoading && checker && (
+            <AnimatePresence>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-4 pb-4 space-y-3">
+                {/* Risk bar */}
+                <div>
+                  <div className="flex justify-between text-[11px] text-gray-400 mb-1">
+                    <span>Risk Score</span>
+                    <span className="font-bold">{checker.riskScore}/100</span>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${checker.riskScore}%` }}
+                      transition={{ duration: 0.6, ease: 'easeOut' }}
+                      className="h-full rounded-full"
+                      style={{ background: checker.riskScore < 34 ? '#22c55e' : checker.riskScore < 67 ? '#f59e0b' : '#ef4444' }}
+                    />
+                  </div>
+                </div>
+
+                <p className="text-[13px] text-gray-600 leading-relaxed">{checker.summary}</p>
+
+                {checker.flags.length > 0 && (
+                  <div className="space-y-2">
+                    {checker.flags.map((flag, i) => (
+                      <div key={i} className={`flex gap-2.5 p-3 rounded-xl ${
+                        flag.type === 'danger' ? 'bg-red-50 border border-red-100' :
+                        flag.type === 'warning' ? 'bg-amber-50 border border-amber-100' :
+                        'bg-blue-50 border border-blue-100'
+                      }`}>
+                        {flag.type === 'danger' ? <Shield size={14} className="text-red-500 flex-shrink-0 mt-0.5" /> :
+                         flag.type === 'warning' ? <AlertTriangle size={14} className="text-amber-500 flex-shrink-0 mt-0.5" /> :
+                         <Info size={14} className="text-blue-500 flex-shrink-0 mt-0.5" />}
+                        <div>
+                          <p className={`text-[12px] font-semibold ${flag.type === 'danger' ? 'text-red-700' : flag.type === 'warning' ? 'text-amber-700' : 'text-blue-700'}`}>{flag.title}</p>
+                          <p className={`text-[11px] mt-0.5 ${flag.type === 'danger' ? 'text-red-600' : flag.type === 'warning' ? 'text-amber-600' : 'text-blue-600'}`}>{flag.detail}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+
+          {!checkerLoading && !checker && (
+            <div className="px-4 pb-4 text-[13px] text-gray-400">
+              Unable to analyze listing right now. Check back later.
+            </div>
+          )}
         </div>
 
         {/* Scam warning */}

@@ -92,7 +92,14 @@ export default function ListingsPage() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {[1,2,3,4,5,6].map(i => (
-              <div key={i} className="h-64 bg-white rounded-2xl animate-pulse border border-border" />
+              <div key={i} className="card overflow-hidden">
+                <div className="shimmer h-48 w-full" />
+                <div className="p-4 space-y-2.5">
+                  <div className="shimmer h-5 rounded-lg w-1/3" />
+                  <div className="shimmer h-4 rounded-lg w-3/4" />
+                  <div className="shimmer h-3 rounded-lg w-1/2" />
+                </div>
+              </div>
             ))}
           </div>
         ) : results.length === 0 ? (
