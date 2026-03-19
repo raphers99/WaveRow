@@ -12,6 +12,26 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     const handle = async () => {
+      // Handle hash fragment tokens (#access_token=...) from magic link emails
+      if (window.location.hash.includes('access_token')) {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (session && !error) {
+          setSession(session)
+          const existing = await getProfile(session.user.id)
+          if (existing) {
+            setProfile(existing)
+          } else {
+            const role = (localStorage.getItem('wr_pending_role') ?? 'student') as 'student' | 'landlord'
+            const profile = await createProfile(session.user.id, session.user.email!, role)
+            setProfile(profile)
+            localStorage.removeItem('wr_pending_role')
+          }
+          navigate('/dashboard', { replace: true })
+          return
+        }
+      }
+
+      // Handle token_hash from OTP code flow
       const tokenHash = searchParams.get('token_hash')
       const type = searchParams.get('type') as 'email' | 'recovery' | null
 
@@ -29,7 +49,6 @@ export default function AuthCallbackPage() {
             setProfile(existing)
             navigate('/dashboard', { replace: true })
           } else {
-            // New user — create profile from stored role preference
             const role = (localStorage.getItem('wr_pending_role') ?? 'student') as 'student' | 'landlord'
             const profile = await createProfile(data.session.user.id, data.session.user.email!, role)
             setProfile(profile)
